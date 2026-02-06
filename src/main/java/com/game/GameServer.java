@@ -8,15 +8,14 @@ import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
 
-public class GameServer implements Runnable{   //refactor to have physics handling in another class
+public class GameServer implements Runnable{   /*Stuff like MovementSystem and other systems will me moved into GameWorld class */
 
     private Socket s = null;
     private ServerSocket ss = null;
     private final int SERVER_PORT = 5000; 
     ServerPlayer player;
     private Thread serverThread;
-    
-    private final float speed = 4; 
+    MovementSystem movement;
 
 
     Kryo kryo = KryoFactory.create();
@@ -27,6 +26,7 @@ public class GameServer implements Runnable{   //refactor to have physics handli
 
     public void initEntities(){ //all actual game entity objects will me moved into game world class
          player = new ServerPlayer(); 
+         movement = new MovementSystem();
     }
 
     public void initThread(){
@@ -38,6 +38,8 @@ public class GameServer implements Runnable{   //refactor to have physics handli
     public void run(){
 
         boolean running = true;
+
+        initEntities();
 
         try{
             ss = new ServerSocket(SERVER_PORT);
@@ -52,16 +54,25 @@ public class GameServer implements Runnable{   //refactor to have physics handli
 
             while(running){
 
-                initEntities();
-
                 /*Method in here to actually process move packet
                 (and any other kind of packet) using deserializePacket method
                 using Movement class. (Need to figure out how to handle different
                 types of packets like login etc)  */
 
-            }
+               MovePacket movepkt = deserializePacket(input);
 
+               movement.update(movepkt, player);
 
+               PositionPacket pospkt = getPositionPacket(player);
+               
+              serializePacket(output, pospkt); 
+               
+               output.flush();
+
+               Thread.sleep(16);
+             }
+
+             // need handling for packets going wrong or else the kryo reading and writing wil block( need some more exception handling)
             
 
              {
@@ -70,6 +81,9 @@ public class GameServer implements Runnable{   //refactor to have physics handli
         }
         catch(IOException e){
             System.out.println(e);
+        } catch (InterruptedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
 
         // try{
@@ -90,6 +104,15 @@ public class GameServer implements Runnable{   //refactor to have physics handli
     public void serializePacket(Output output, PositionPacket pospkt){
         kryo.writeObject(output, pospkt);
 
+    }
+
+    public PositionPacket getPositionPacket(ServerPlayer player){
+        PositionPacket pospkt = new PositionPacket();
+
+       pospkt.x = player.getPosition().x;
+       pospkt.y = player.getPosition().y;
+
+        return pospkt;
     }
 
 

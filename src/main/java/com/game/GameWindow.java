@@ -38,7 +38,7 @@ public class GameWindow extends JFrame {
                 // Basic window setup
                 this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 this.setResizable(true);
-                this.setTitle("Zombie hunter");
+                this.setTitle("IClone");
                 this.setPreferredSize(new Dimension(800, 800));
                 this.setLayout(new BorderLayout(0, 0)); // No gaps between components
                 
@@ -110,8 +110,8 @@ public class GameWindow extends JFrame {
                 gamePanel.setFocusable(true);
                 gamePanel.requestFocusInWindow();
                 gamePanel.initGameThread();
-               // gamePanel.initNetworkThread();
                 gamePanel.initGameEntities();
+                gamePanel.initNetworkThread();
                 
                 // Final window setup
                 this.setVisible(true);

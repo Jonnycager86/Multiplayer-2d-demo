@@ -10,7 +10,7 @@ import javax.swing.JPanel;
 public class GamePanel extends JPanel implements Runnable{
     
     public InputHandler inputHandler;
-    ServerPlayer player;
+    ClientPlayer player;
 
     private Thread gameThread;
     private Thread serverThread;
@@ -30,18 +30,19 @@ public class GamePanel extends JPanel implements Runnable{
         // addMouseListener(mouse);
          //addMouseMotionListener(mouse);
          
-
-        //networking test
-       // serverSocket = new GameServer(this);
-       // serverSocket.start();
-
-       // clientSocket = new GameClient(this, "localhost");
-       // clientSocket.start(); // thread start needs to move from constructor
     }
 
     public void initGameEntities(){ 
-        player = new ServerPlayer();
+        player = new ClientPlayer();
        
+    }
+
+    public void initNetworkThread(){
+        gameServer = new GameServer();
+        gameClient = new GameClient("127.0.0.1", 5000, player);
+        gameServer.initThread();
+        gameClient.initThread();
+        System.out.println("Network started");
     }
 
 
@@ -53,7 +54,6 @@ public class GamePanel extends JPanel implements Runnable{
     }
 
     public void updateGame(){
-        
     }
 
     @Override
@@ -81,7 +81,7 @@ public class GamePanel extends JPanel implements Runnable{
     }
 
     @Override
-    public void paintComponent(Graphics g){ // change to protected
+    public void paintComponent(Graphics g){ 
 
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
@@ -91,7 +91,7 @@ public class GamePanel extends JPanel implements Runnable{
        // if(player != null){
          //  player.drawPlayer(g2);
 
-        player.renderUpdate(g2);
+       player.render(g2);
         
 
 

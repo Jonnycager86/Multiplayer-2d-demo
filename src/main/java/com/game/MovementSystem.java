@@ -1,34 +1,38 @@
 package com.game;
 
-public class MovementSystem{
+import java.util.ArrayDeque;
+import java.util.Queue;
 
-    private ServerPlayer player;
-    private MovePacket movepkt;
-    private final float speed = 4;    
+public class MovementSystem{ // for now this will only deal with players
+
+    //private ServerPlayer player;
+     private MovePacket movepkt;
+    private final float speed = 4; 
+    
+    Queue<MovePacket> inputQueue = new ArrayDeque<>();
+
+    
 
 
 
-    public MovementSystem(MovePacket movepkt, ServerPlayer player){ //should also have a unique player id or entity id
-        this.movepkt = movepkt;
-        this.player = player;
-    }
+     //should also have a unique player id or entity id
 
-    public void update(){
+    public void update(MovePacket movepkt, ServerPlayer player){            //Needs work
 
-        player.getVelocity().x = 0;
-        player.getVelocity().y = 0;
+
+        player.setVelocity(0,0);
 
         if(movepkt.up){
-            player.getVelocity().y = -1;
+            player.setVelocityY(-1); // setting the intial direction of the vector
         }
         if(movepkt.down){
-            player.getVelocity().y = 1;
+            player.setVelocityY(1);
         }
         if(movepkt.left){
-            player.getVelocity().x = -1;
+            player.setVelocityX(-1);
         }
         if(movepkt.right){
-            player.getVelocity().x = 1;
+            player.setVelocityX(1);
         }
 
         player.getVelocity().normalize();

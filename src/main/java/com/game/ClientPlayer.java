@@ -10,6 +10,23 @@ public class ClientPlayer {  //This will be visual mirror of the server side pla
 
     public void render(Graphics2D g2){
         
-        g2.fillRect((int)x, (int)y, 120,120);
+        g2.fillRect((int)x, (int)y, 20,20);
+    }
+
+
+    public void setX(float x){
+        this.x = x;
+    }
+
+    public void setY(float y){
+        this.y = y;
+    }
+
+    public float getX(){
+        return this.x;
+    }
+
+    public float getY(){
+        return this.y;
     }
 }

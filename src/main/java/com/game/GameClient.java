@@ -13,14 +13,18 @@ public class GameClient implements Runnable{
     private final String ipAddr;
     private final int port;
     private Thread clientThread;
+    private ClientPlayer player;
+    private Input input;
+    private Output output;
 
     Kryo kryo = KryoFactory.create();
 
    
 
-   public GameClient(String ipAddr, int port){
+   public GameClient(String ipAddr, int port, ClientPlayer player){
         this.ipAddr = ipAddr;
         this.port = port;
+        this.player = player;
 
    }
 
@@ -37,8 +41,9 @@ public class GameClient implements Runnable{
     InputHandler inputHandler = new InputHandler();
     try{
     sock = new Socket(ipAddr, port);
-    Output output = new Output(sock.getOutputStream()); //Client also needs to recv data
-    Input input = new Input(sock.getInputStream());
+     output = new Output(sock.getOutputStream()); 
+     input = new Input(sock.getInputStream());
+
     while(running){
 
             MovePacket movepkt = new MovePacket();
@@ -49,11 +54,23 @@ public class GameClient implements Runnable{
 
             output.flush();
 
+            PositionPacket pospkt = deserializePacket(input);
+
+            applyInputToPlayer(player, pospkt);
+           
+
+            //ClientGameWorld is where working log of all the players will be to apply position packets
+
+            Thread.sleep(16);
+
     }
 
      }
     catch(IOException e){
         System.err.println(e);
+    } catch (InterruptedException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
     }
 
 }
@@ -69,8 +86,16 @@ public class GameClient implements Runnable{
             kryo.writeObject(output, movepkt);
         }
 
-        public void deserializePacket(Input input){
-            kryo.readObject(input, MovePacket.class);
+        public PositionPacket deserializePacket(Input input){    
+            PositionPacket deserializedpkt = kryo.readObject(input, PositionPacket.class);
+        
+            return deserializedpkt;
+    }
+
+        public void applyInputToPlayer(ClientPlayer player, PositionPacket pospkt){
+
+            player.setX(pospkt.x);
+            player.setY(pospkt.y);
         }
 
 

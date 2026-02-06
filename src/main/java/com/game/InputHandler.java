@@ -7,7 +7,7 @@ import java.awt.event.KeyListener;
 public class InputHandler implements KeyListener{
 
     //key variables
-    public boolean upPressed, downPressed, leftPressed, rightPressed;
+    public static boolean upPressed, downPressed, leftPressed, rightPressed;
 
 
     //Dependencies
@@ -29,10 +29,18 @@ public class InputHandler implements KeyListener{
 
         switch (key){
 
-        case KeyEvent.VK_W -> upPressed = true;
-        case KeyEvent.VK_S -> downPressed = true;
-        case KeyEvent.VK_A -> leftPressed = true;  
-        case KeyEvent.VK_D -> rightPressed = true;
+        case KeyEvent.VK_W -> {
+            upPressed = true;
+        }
+        case KeyEvent.VK_S -> {
+            downPressed = true;
+        }
+        case KeyEvent.VK_A -> {
+            leftPressed = true; 
+        } 
+        case KeyEvent.VK_D -> {
+            rightPressed = true;
+        }
        }
     }
 

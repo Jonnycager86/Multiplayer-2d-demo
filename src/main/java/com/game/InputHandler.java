@@ -10,10 +10,7 @@ public class InputHandler implements KeyListener{
     public static boolean upPressed, downPressed, leftPressed, rightPressed;
 
 
-    //Dependencies
-
     public InputHandler(){
-        
     }
 
 
@@ -31,15 +28,19 @@ public class InputHandler implements KeyListener{
 
         case KeyEvent.VK_W -> {
             upPressed = true;
+           // System.out.println("up");
         }
         case KeyEvent.VK_S -> {
             downPressed = true;
+          //   System.out.println("down");
         }
         case KeyEvent.VK_A -> {
             leftPressed = true; 
+            // System.out.println("left");
         } 
         case KeyEvent.VK_D -> {
             rightPressed = true;
+            // System.out.println("right");
         }
        }
     }

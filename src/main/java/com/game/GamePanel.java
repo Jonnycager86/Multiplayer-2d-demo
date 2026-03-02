@@ -2,6 +2,7 @@ package com.game;
 
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.util.HashMap;
 
 import javax.swing.JPanel;
 
@@ -10,15 +11,15 @@ import javax.swing.JPanel;
 public class GamePanel extends JPanel implements Runnable{
     
     public InputHandler inputHandler;
-    ClientPlayer player;
+    public ClientPlayer clientPlayer;
+    public HashMap<Integer, WorldPlayer> worldPlayers;
+
 
     private Thread gameThread;
-    private Thread serverThread;
-    private Thread clientThread;
     final int FPS = 60;
 
     private GameClient gameClient;
-    private GameServer gameServer;
+
   
 
     public GamePanel(){
@@ -33,16 +34,13 @@ public class GamePanel extends JPanel implements Runnable{
     }
 
     public void initGameEntities(){ 
-        player = new ClientPlayer();
-       
+        clientPlayer = new ClientPlayer();
+        worldPlayers = new HashMap<>();
     }
 
     public void initNetworkThread(){
-        gameServer = new GameServer();
-        gameClient = new GameClient("127.0.0.1", 5000, player);
-        gameServer.initThread();
+        gameClient = new GameClient("127.0.0.1", 5000, clientPlayer, worldPlayers);
         gameClient.initThread();
-        System.out.println("Network started");
     }
 
 
@@ -54,6 +52,7 @@ public class GamePanel extends JPanel implements Runnable{
     }
 
     public void updateGame(){
+       
     }
 
     @Override
@@ -86,12 +85,11 @@ public class GamePanel extends JPanel implements Runnable{
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
 
-        // Draw game elements here
-      //   g2.fillRect(50, 50, 100, 100);
-       // if(player != null){
-         //  player.drawPlayer(g2);
+       clientPlayer.render(g2);
 
-       player.render(g2);
+       for(WorldPlayer wp : worldPlayers.values()){
+            wp.render(g2);
+       }
         
 
 

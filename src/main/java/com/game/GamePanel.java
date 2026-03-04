@@ -38,8 +38,8 @@ public class GamePanel extends JPanel implements Runnable{
         worldPlayers = new HashMap<>();
     }
 
-    public void initNetworkThread(){
-        gameClient = new GameClient("127.0.0.1", 5000, clientPlayer, worldPlayers);
+    public void initNetworkThread(String serverIP){
+        gameClient = new GameClient(serverIP, clientPlayer, worldPlayers);
         gameClient.initThread();
     }
 
@@ -85,12 +85,15 @@ public class GamePanel extends JPanel implements Runnable{
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
 
+    if(clientPlayer != null){
        clientPlayer.render(g2);
-
+        }
+        
+    if(worldPlayers != null){
        for(WorldPlayer wp : worldPlayers.values()){
             wp.render(g2);
        }
-        
+        }
 
 
         g2.dispose();

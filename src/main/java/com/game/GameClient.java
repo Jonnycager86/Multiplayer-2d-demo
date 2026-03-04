@@ -13,7 +13,7 @@ public class GameClient implements Runnable{
     
     private Socket sock = null;
     private final String ipAddr;
-    private final int port;
+    private final int PORT = 5000;
     private Thread clientThread;
     private final ClientPlayer clientPlayer;
     private Input input;
@@ -25,9 +25,8 @@ public class GameClient implements Runnable{
 
    
 
-   public GameClient(String ipAddr, int port, ClientPlayer clientPlayer, HashMap<Integer, WorldPlayer> worldPlayers){
+   public GameClient(String ipAddr, ClientPlayer clientPlayer, HashMap<Integer, WorldPlayer> worldPlayers){
         this.ipAddr = ipAddr;
-        this.port = port;
         this.clientPlayer = clientPlayer;
         this.worldPlayers = worldPlayers;
    }
@@ -44,7 +43,7 @@ public class GameClient implements Runnable{
 
     InputHandler inputHandler = new InputHandler();
     try{
-     sock = new Socket(ipAddr, port);
+     sock = new Socket(ipAddr, PORT);
      output = new Output(sock.getOutputStream()); 
      input = new Input(sock.getInputStream());
 

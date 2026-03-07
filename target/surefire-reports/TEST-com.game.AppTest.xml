@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" name="com.game.AppTest" time="0.049" tests="1" errors="0" skipped="0" failures="0">
+  <properties>
+    <property name="java.specification.version" value="22"/>
+    <property name="sun.cpu.isalist" value="amd64"/>
+    <property name="sun.jnu.encoding" value="Cp1252"/>
+    <property name="java.class.path" value="c:\Users\jonma\OneDrive\JAVA\gamedemo\target\test-classes;c:\Users\jonma\OneDrive\JAVA\gamedemo\target\classes;C:\Users\jonma\.m2\repository\junit\junit\4.11\junit-4.11.jar;C:\Users\jonma\.m2\repository\org\hamcrest\hamcrest-core\1.3\hamcrest-core-1.3.jar;C:\Users\jonma\.m2\repository\com\esotericsoftware\kryo\5.6.2\kryo-5.6.2.jar;C:\Users\jonma\.m2\repository\com\esotericsoftware\reflectasm\1.11.9\reflectasm-1.11.9.jar;C:\Users\jonma\.m2\repository\org\objenesis\objenesis\3.4\objenesis-3.4.jar;C:\Users\jonma\.m2\repository\com\esotericsoftware\minlog\1.3.1\minlog-1.3.1.jar;"/>
+    <property name="java.vm.vendor" value="Eclipse Adoptium"/>
+    <property name="sun.arch.data.model" value="64"/>
+    <property name="user.variant" value=""/>
+    <property name="java.vendor.url" value="https://adoptium.net/"/>
+    <property name="user.timezone" value="America/Port_of_Spain"/>
+    <property name="os.name" value="Windows 11"/>
+    <property name="java.vm.specification.version" value="22"/>
+    <property name="sun.java.launcher" value="SUN_STANDARD"/>
+    <property name="user.country" value="TT"/>
+    <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk-22.0.2.9-hotspot\bin"/>
+    <property name="sun.java.command" value="C:\Users\jonma\AppData\Local\Temp\surefire16046524045074669736\surefirebooter16707222533379627993.jar C:\Users\jonma\AppData\Local\Temp\surefire16046524045074669736 2026-03-04T19-59-39_223-jvmRun1 surefire5361005975853372654tmp surefire_04448525702570498716tmp"/>
+    <property name="jdk.debug" value="release"/>
+    <property name="surefire.test.class.path" value="c:\Users\jonma\OneDrive\JAVA\gamedemo\target\test-classes;c:\Users\jonma\OneDrive\JAVA\gamedemo\target\classes;C:\Users\jonma\.m2\repository\junit\junit\4.11\junit-4.11.jar;C:\Users\jonma\.m2\repository\org\hamcrest\hamcrest-core\1.3\hamcrest-core-1.3.jar;C:\Users\jonma\.m2\repository\com\esotericsoftware\kryo\5.6.2\kryo-5.6.2.jar;C:\Users\jonma\.m2\repository\com\esotericsoftware\reflectasm\1.11.9\reflectasm-1.11.9.jar;C:\Users\jonma\.m2\repository\org\objenesis\objenesis\3.4\objenesis-3.4.jar;C:\Users\jonma\.m2\repository\com\esotericsoftware\minlog\1.3.1\minlog-1.3.1.jar;"/>
+    <property name="sun.cpu.endian" value="little"/>
+    <property name="user.home" value="C:\Users\jonma"/>
+    <property name="user.language" value="en"/>
+    <property name="java.specification.vendor" value="Oracle Corporation"/>
+    <property name="java.version.date" value="2024-07-16"/>
+    <property name="java.home" value="C:\Program Files\Java\jdk-22.0.2.9-hotspot"/>
+    <property name="file.separator" value="\"/>
+    <property name="basedir" value="c:\Users\jonma\OneDrive\JAVA\gamedemo"/>
+    <property name="java.vm.compressedOopsMode" value="Zero based"/>
+    <property name="line.separator" value="&#10;"/>
+    <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
+    <property name="java.specification.name" value="Java Platform API Specification"/>
+    <property name="surefire.real.class.path" value="C:\Users\jonma\AppData\Local\Temp\surefire16046524045074669736\surefirebooter16707222533379627993.jar"/>
+    <property name="user.script" value=""/>
+    <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
+    <property name="java.runtime.version" value="22.0.2+9"/>
+    <property name="user.name" value="jonma"/>
+    <property name="stdout.encoding" value="Cp1252"/>
+    <property name="path.separator" value=";"/>
+    <property name="os.version" value="10.0"/>
+    <property name="java.runtime.name" value="OpenJDK Runtime Environment"/>
+    <property name="file.encoding" value="UTF-8"/>
+    <property name="java.vm.name" value="OpenJDK 64-Bit Server VM"/>
+    <property name="java.vendor.version" value="Temurin-22.0.2+9"/>
+    <property name="localRepository" value="C:\Users\jonma\.m2\repository"/>
+    <property name="java.vendor.url.bug" value="https://github.com/adoptium/adoptium-support/issues"/>
+    <property name="java.io.tmpdir" value="C:\Users\jonma\AppData\Local\Temp\"/>
+    <property name="java.version" value="22.0.2"/>
+    <property name="user.dir" value="c:\Users\jonma\OneDrive\JAVA\gamedemo"/>
+    <property name="os.arch" value="amd64"/>
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
+    <property name="sun.os.patch.level" value=""/>
+    <property name="native.encoding" value="Cp1252"/>
+    <property name="java.library.path" value="C:\Program Files\Java\jdk-22.0.2.9-hotspot\bin;C:\WINDOWS\Sun\Java\bin;C:\WINDOWS\system32;C:\WINDOWS;c:\Users\jonma\AppData\Roaming\Code\User\globalStorage\github.copilot-chat\debugCommand;c:\Users\jonma\AppData\Roaming\Code\User\globalStorage\github.copilot-chat\copilotCli;C:\Program Files\Eclipse Adoptium\jdk-22.0.2.9-hotspot\bin;C:\Program Files\Eclipse Adoptium\jdk-21.0.4.7-hotspot\bin;C:\Program Files\Common Files\Oracle\Java\javapath;C:\Users\jonma\Downloads\DB_Home\bin;C:\windows\system32;C:\windows;C:\windows\System32\Wbem;C:\windows\System32\WindowsPowerShell\v1.0\;C:\windows\System32\OpenSSH\;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\HP\HP One Agent;C:\Program Files\Git\cmd;C:\Program Files\dotnet\;C:\Program Files (x86)\Windows Kits\10\Windows Performance Toolkit\;C:\Program Files\NVIDIA Corporation\NVIDIA app\NvDLISR;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\Eclipse Adoptium\jdk-22.0.0.36-hotspot\bin;C:\Program Files\nodejs\;C:\Program Files\cursor\resources\app\bin;C:\Program Files\Tailscale\;C:\Users\jonma\AppData\Local\Programs\Python\Python311\Scripts\;C:\Users\jonma\AppData\Local\Programs\Python\Python311\;C:\Users\jonma\AppData\Local\Microsoft\WindowsApps;C:\Users\jonma\AppData\Local\Programs\Microsoft VS Code\bin;C:\MinGW\bin;C:\Program Files\Java\jdk-11;C:\Users\jonma\.dotnet\tools;C:\Users\jonma\AppData\Local\GitHubDesktop\bin;C:\Users\jonma\AppData\Local\Programs\cursor\resources\app\bin;C:\Users\jonma\AppData\Roaming\npm;c:\Users\jonma\.vscode\extensions\vscjava.vscode-java-debug-0.58.5\bundled\scripts\noConfigScripts;c:\Users\jonma\.vscode\extensions\ms-python.debugpy-2025.18.0-win32-x64\bundled\scripts\noConfigScripts;."/>
+    <property name="java.vm.info" value="mixed mode, sharing"/>
+    <property name="stderr.encoding" value="Cp1252"/>
+    <property name="java.vendor" value="Eclipse Adoptium"/>
+    <property name="java.vm.version" value="22.0.2+9"/>
+    <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
+    <property name="java.class.version" value="66.0"/>
+  </properties>
+  <testcase name="shouldAnswerWithTrue" classname="com.game.AppTest" time="0.005"/>
+</testsuite>

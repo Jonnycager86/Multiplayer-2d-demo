@@ -83,19 +83,11 @@ public class GameClient implements Runnable{
 
             }
 
-            
-
-
-            Thread.sleep(16);
-
     }
 
      }
     catch(IOException e){
         System.err.println(e);
-    }catch (InterruptedException e) {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
     }
 
 }

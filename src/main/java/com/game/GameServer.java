@@ -75,8 +75,8 @@ public class GameServer implements Runnable{
 
             LoginResponsePacket loginpkt = new LoginResponsePacket();
             loginpkt.assignedClientID = clientID;
-            loginpkt.x = 10; // IK its hardcoded for now but ill fix it later
-            loginpkt.y = 10;
+            loginpkt.x = player.getPosition().x; 
+            loginpkt.y = player.getPosition().y;
 
             kryo.writeClassAndObject(output, loginpkt);
     

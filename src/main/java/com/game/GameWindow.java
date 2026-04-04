@@ -4,7 +4,6 @@ import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.GridLayout;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -25,7 +24,7 @@ public class GameWindow extends JFrame {
 
     // Game screen components (built once, reused)
     private GamePanel gamePanel;
-    private JPanel infoPanel;
+   // private JPanel infoPanel;
     private JLabel ammoLabel;
     private JLabel zombieCountLabel;
     private JLabel scoreLabel;
@@ -35,12 +34,12 @@ public class GameWindow extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setResizable(false);
         setTitle("IClone");
-        setPreferredSize(new Dimension(800, 800));
+        setPreferredSize(new Dimension(768, 576)); // 16 tiles wide and 12 tiles high
 
         // ---- Card layout container — fills the whole window ----
         cardLayout = new CardLayout();
         container = new JPanel(cardLayout);
-        container.setPreferredSize(new Dimension(800, 800));
+        container.setPreferredSize(new Dimension(768, 576));
 
         // ---- Build each screen ----
         MenuPanel menuPanel       = new MenuPanel(cardLayout, container, this);
@@ -91,9 +90,9 @@ public class GameWindow extends JFrame {
         screen.setBackground(Color.BLACK);
 
         // HUD / info bar
-        infoPanel = new JPanel(new GridLayout(1, 3, 10, 0));
-        infoPanel.setPreferredSize(new Dimension(800, 40));
-        infoPanel.setBackground(Color.DARK_GRAY);
+       // infoPanel = new JPanel(new GridLayout(1, 3, 10, 0));
+       // infoPanel.setPreferredSize(new Dimension(800, 40));
+       // infoPanel.setBackground(Color.DARK_GRAY);
 
         Font labelFont = new Font("Agency FB", Font.BOLD, 16);
         zombieCountLabel = new JLabel("Zombies: 0", SwingConstants.CENTER);
@@ -108,16 +107,16 @@ public class GameWindow extends JFrame {
         scoreLabel.setFont(labelFont);
         scoreLabel.setForeground(Color.WHITE);
 
-        infoPanel.add(zombieCountLabel);
-        infoPanel.add(ammoLabel);
-        infoPanel.add(scoreLabel);
+        // infoPanel.add(zombieCountLabel);
+        // infoPanel.add(ammoLabel);
+        // infoPanel.add(scoreLabel);
 
         // Game panel (the actual game rendering + input)
         gamePanel = new GamePanel();
         gamePanel.setBackground(Color.BLACK);
         gamePanel.initGameThread();   // start the render loop now; network starts later
 
-        screen.add(infoPanel, java.awt.BorderLayout.NORTH);
+       // screen.add(infoPanel, java.awt.BorderLayout.NORTH);
         screen.add(gamePanel, java.awt.BorderLayout.CENTER);
 
         return screen;

@@ -11,8 +11,10 @@ import javax.swing.JPanel;
 public class GamePanel extends JPanel implements Runnable{
     
     public InputHandler inputHandler;
+    public Mouse mouse;
     public ClientPlayer clientPlayer;
     public HashMap<Integer, WorldPlayer> worldPlayers;
+    TileManager tileManager = new TileManager();
 
 
     private Thread gameThread;
@@ -23,13 +25,12 @@ public class GamePanel extends JPanel implements Runnable{
   
 
     public GamePanel(){
-        // Game state variables should be initialized here
          inputHandler = new InputHandler();
        //  player = new Player(inputHandler);
-        // mouse = new Mouse(player);
+         mouse = new Mouse();
          addKeyListener(inputHandler);
-        // addMouseListener(mouse);
-         //addMouseMotionListener(mouse);
+         addMouseListener(mouse);
+         addMouseMotionListener(mouse);
          
     }
 
@@ -85,15 +86,20 @@ public class GamePanel extends JPanel implements Runnable{
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
 
+    if(tileManager != null){
+        tileManager.render(g2, clientPlayer);
+    }
     if(clientPlayer != null){
-       clientPlayer.render(g2);
-        }
+       clientPlayer.render(g2, tileManager);
+    }
         
     if(worldPlayers != null){
        for(WorldPlayer wp : worldPlayers.values()){
-            wp.render(g2);
+            wp.render(g2, tileManager);
        }
         }
+
+        g2.fill3DRect(Mouse.getMouseX(), Mouse.getMouseY(), 25, 25, true);
 
 
         g2.dispose();

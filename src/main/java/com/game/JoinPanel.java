@@ -32,7 +32,7 @@ public class JoinPanel extends JPanel {
 
         setBackground(new Color(20, 20, 20));
         setLayout(new GridBagLayout());
-        setPreferredSize(new Dimension(800, 800));
+        setPreferredSize(new Dimension(768, 576));
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 0;

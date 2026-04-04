@@ -5,7 +5,7 @@ import java.awt.geom.AffineTransform;
 
 public class ServerPlayer{
 
-    /*(this is the true player's position) */
+    /*(this is the player's true position) */
 
     private int EntityID;
     private Vector2D position;
@@ -15,7 +15,7 @@ public class ServerPlayer{
    
 
     public ServerPlayer(){
-        position = new Vector2D(10, 10);
+        position = new Vector2D(Constants.screen_width, Constants.screen_height);
         velocity = new Vector2D(0,0);
     }
 

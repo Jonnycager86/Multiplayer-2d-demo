@@ -46,7 +46,7 @@ public class TileManager {
 
         int row = 0;
         int col = 0;
-        int worldX = 0;     // this is gonna be some garbo but it will be fixed
+        int worldX = 0;    
         int worldY = 0;
         playerX = clientPlayer.getX();       // all of this will be moved somewhere else
         playerY = clientPlayer.getY();

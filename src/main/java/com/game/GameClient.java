@@ -16,6 +16,7 @@ public class GameClient implements Runnable{
     private final int PORT = 5000;
     private Thread clientThread;
     private final ClientPlayer clientPlayer;
+    private ClientZombie zombie;
     private Input input;
     private Output output;
 
@@ -25,10 +26,11 @@ public class GameClient implements Runnable{
 
    
 
-   public GameClient(String ipAddr, ClientPlayer clientPlayer, HashMap<Integer, WorldPlayer> worldPlayers){
+   public GameClient(String ipAddr, ClientPlayer clientPlayer, HashMap<Integer, WorldPlayer> worldPlayers, ClientZombie zombie){
         this.ipAddr = ipAddr;
         this.clientPlayer = clientPlayer;
         this.worldPlayers = worldPlayers;
+        this.zombie = zombie;
    }
 
     public void initThread(){
@@ -81,6 +83,8 @@ public class GameClient implements Runnable{
                     
                 processClientPlayerMovement(snapshot);
 
+                processZombieState(snapshot);
+
             }
 
     }
@@ -101,20 +105,24 @@ public class GameClient implements Runnable{
 
         public void processClientPlayerMovement(SnapshotPacket snapshot){
 
-            for(EntityState statepkt : snapshot.state){
-            
+        for(EntityState statepkt : snapshot.state){
+           if(statepkt.entityType == 0){ 
             if(clientPlayer.getID() == statepkt.EntityID){
               clientPlayer.setX(statepkt.x);
               clientPlayer.setY(statepkt.y);
             }
 
            }
+
+            }
         }
 
 
 
         public void processWorldPlayerState(SnapshotPacket snapshot){
             for(EntityState statepkt : snapshot.state){
+
+                if(statepkt.entityType == 0){
 
                 if(statepkt.EntityID == clientPlayer.getID()){
                     continue;
@@ -135,8 +143,21 @@ public class GameClient implements Runnable{
 
                 }
             }
+
+            }
         }
 
+        public void processZombieState(SnapshotPacket snapshot){
+            
+            for(EntityState statepkt : snapshot.state){
+                if(statepkt.entityType == 0){
+
+                    zombie.setX(statepkt.x);
+                    zombie.setY(statepkt.y);
+                }
+        }
+
+    }
 
 
         public void serializePacket(MoveIntentPacket movepkt, Output output){

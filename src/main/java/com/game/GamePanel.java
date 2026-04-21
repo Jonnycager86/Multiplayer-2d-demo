@@ -13,6 +13,7 @@ public class GamePanel extends JPanel implements Runnable{
     public InputHandler inputHandler;
     public Mouse mouse;
     public ClientPlayer clientPlayer;
+    public ClientZombie zombie;
     public HashMap<Integer, WorldPlayer> worldPlayers;
     TileManager tileManager = new TileManager();
 
@@ -37,10 +38,11 @@ public class GamePanel extends JPanel implements Runnable{
     public void initGameEntities(){ 
         clientPlayer = new ClientPlayer();
         worldPlayers = new HashMap<>();
+        zombie = new ClientZombie();
     }
 
     public void initNetworkThread(String serverIP){
-        gameClient = new GameClient(serverIP, clientPlayer, worldPlayers);
+        gameClient = new GameClient(serverIP, clientPlayer, worldPlayers, zombie);
         gameClient.initThread();
     }
 
@@ -80,8 +82,9 @@ public class GamePanel extends JPanel implements Runnable{
         }
     }
 
+
     @Override
-    public void paintComponent(Graphics g){ 
+    public void paintComponent(Graphics g){  
 
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
@@ -99,7 +102,11 @@ public class GamePanel extends JPanel implements Runnable{
        }
         }
 
-        g2.fill3DRect(Mouse.getMouseX(), Mouse.getMouseY(), 25, 25, true);
+    if(zombie != null){
+        zombie.render(g2);
+    }
+
+        g2.fillRect(Mouse.getMouseX(), Mouse.getMouseY(), 25, 25);
 
 
         g2.dispose();

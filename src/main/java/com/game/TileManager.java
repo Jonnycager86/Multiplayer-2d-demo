@@ -1,14 +1,14 @@
 package com.game;
 
 import java.awt.Graphics2D;
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStreamReader;
+
 
 public class TileManager {
 
-    public int[][] mapGrid; 
+    
+    public GameMap gameMap = new GameMap();
+
+    public int[][] mapGrid = gameMap.getMapGrid();
 
     final int max_row_size = 24;
     final int max_col_size = 32;
@@ -34,11 +34,6 @@ public class TileManager {
         
          tileMetal = new Tile(TileType.METAL);
          tileBrick = new Tile(TileType.BRICK);
-
-         mapGrid = new int[max_row_size][max_col_size];
-
-         loadMap("/images/mapfile.txt");
-
     }
 
 
@@ -104,37 +99,22 @@ public class TileManager {
 
     }
 
-    public void loadMap(String filePath){
 
-        String[] numbers;
-        String line;
+    public int[][] getMapGrid() {
+    return mapGrid;
+}
 
-        try {
-            BufferedReader br = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(filePath)));
-
-           for(int i = 0; i < max_row_size; i++){
-
-                line = br.readLine();
-                numbers = line.split("");
-
-            for(int j = 0; j < max_col_size; j++){
-
-                mapGrid[i][j] = Integer.parseInt(numbers[j]);
-            }
-           }
-            
-
-           br.close();
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
+    public int getMaxRowSize() {
+        return max_row_size;
     }
 
+    public int getMaxColSize() {
+        return max_col_size;
+    }
 
+    public int getTileSize() {
+        return tile_size;
+    }
 
 
 

@@ -39,7 +39,15 @@ public class Node implements Comparable<Node> {
 
     @Override
     public int compareTo(Node node) {
-        return Integer.compare(this.fCost, node.fCost);
+        
+     int fcompare = Integer.compare(this.fCost, node.fCost);
+
+        if(fcompare != 0){
+            return fcompare;
+        }
+        else{
+            return Integer.compare(this.gCost, node.gCost);
+        }
     }
 
 

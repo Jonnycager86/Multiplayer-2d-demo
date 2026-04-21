@@ -19,12 +19,17 @@ public class GameServer implements Runnable{
     private final int TICK_RATE = 30;
     private Thread serverThread;
     MovementSystem movement;
+    GameMap gameMap = new GameMap();
+    ServerZombie zombie = new ServerZombie(gameMap);
     private int clientID = 0;
 
     private final ArrayList<ServerPlayer> players = new ArrayList<>(); // actual players will be moved to server game world class
     private final HashMap<Integer, Socket> clients = new HashMap<>();
     private final ConcurrentHashMap<Integer, LinkedBlockingQueue<MoveIntentPacket>> inputQueues = new ConcurrentHashMap<>();
     private final ConcurrentHashMap<Integer, Output> outputs = new ConcurrentHashMap<>();
+    private final ArrayList<ServerZombie> zombies  = new ArrayList<>();
+
+   
 
 
     Kryo kryo = KryoFactory.create();
@@ -34,7 +39,8 @@ public class GameServer implements Runnable{
     }
 
     public void initEntities(){ //all actual game entity objects will me moved into game world class
-         movement = new MovementSystem();
+        movement = new MovementSystem();
+        
     }
 
     public void initThread(){
@@ -148,18 +154,21 @@ public class GameServer implements Runnable{
             while((movepkt = entry.getValue().poll()) != null){
                
                 movement.update(movepkt, player);
+                zombieUpdate(player, zombie);  // careful about placement here
 
-                EntityState statePacket = getEntityStatePacket(player);
+                EntityState statePacketP = getPlayerStatePacket(player);
+                EntityState statePacketZ = getZombieStatePacket(zombie);
 
-                if(statePacket != null){
-                snapshot.state.add(statePacket);
+                if(statePacketP != null && statePacketZ != null){
+                snapshot.state.add(statePacketP);
+                snapshot.state.add(statePacketZ);
                 }
             }
         }
 
         broadcastSnapshotToClients(snapshot);
     }
-    // come back to if outputs even needs to be a concurrent hashmap and not just a list
+    
     public void broadcastSnapshotToClients(SnapshotPacket snapshot){
 
         for(Map.Entry<Integer, Output> entry : outputs.entrySet()){
@@ -192,12 +201,23 @@ public class GameServer implements Runnable{
 
     }
 
-    public EntityState getEntityStatePacket(ServerPlayer player){
-        EntityState entityState = new EntityState();
+    public EntityState getPlayerStatePacket(ServerPlayer player){
+       EntityState entityState = new EntityState();
 
        entityState.EntityID = player.getID();
        entityState.x = player.getPosition().x;
        entityState.y = player.getPosition().y;
+       entityState.entityType = 0;
+
+        return entityState;
+    }
+
+    public EntityState getZombieStatePacket(ServerZombie zombie){
+       EntityState entityState = new EntityState();
+
+       entityState.x = zombie.getPosition().x;
+       entityState.y = zombie.getPosition().y;
+       entityState.entityType = 1;
 
         return entityState;
     }
@@ -228,6 +248,22 @@ public class GameServer implements Runnable{
 
 
     }
+
+
+     public void initZombies(){           // this will be moved into another class later
+    
+    //    for(int i = 0; i < 10; i++){
+    //     zombies.add(new Zombie(gameMap));  // testing one zombie for now
+    //    }
+        
+   }
+
+   public void zombieUpdate(ServerPlayer player, ServerZombie zombie){
+
+        zombie.updatePathToTarget(player);
+
+        zombie.followPath();
+   }
 
 
     

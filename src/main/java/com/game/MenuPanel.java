@@ -28,7 +28,7 @@ public class MenuPanel extends JPanel {
         this.container = container;
         this.gameWindow = gameWindow;
 
-        setBackground(new Color(20, 20, 20));
+        setBackground(UITheme.BG_0);
         setLayout(new GridBagLayout());
         setPreferredSize(new Dimension(768, 576));
 
@@ -37,39 +37,76 @@ public class MenuPanel extends JPanel {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.gridx = 0;
 
+        // Background chrome
+        setOpaque(false);
+        BackgroundPanel bg = new BackgroundPanel();
+        bg.setLayout(new GridBagLayout());
+        bg.setPreferredSize(new Dimension(768, 576));
+        GridBagConstraints bgc = new GridBagConstraints();
+        bgc.gridx = 0;
+        bgc.gridy = 0;
+        bgc.fill = GridBagConstraints.BOTH;
+        bgc.weightx = 1.0;
+        bgc.weighty = 1.0;
+        add(bg, bgc);
+
+        GridBagConstraints inner = new GridBagConstraints();
+        inner.insets = new Insets(10, 0, 10, 0);
+        inner.fill = GridBagConstraints.HORIZONTAL;
+        inner.gridx = 0;
+
+        JPanel content = new JPanel(new GridBagLayout());
+        content.setBackground(UITheme.PANEL);
+        content.setOpaque(true);
+        content.setBorder(UITheme.panelBorder());
+
         // Title
         JLabel title = new JLabel("ICLONE", SwingConstants.CENTER);
-        title.setFont(new Font("Agency FB", Font.BOLD, 72));
-        title.setForeground(new Color(220, 30, 30));
-        gbc.gridy = 0;
-        gbc.insets = new Insets(0, 0, 40, 0);
-        add(title, gbc);
+        title.setFont(UITheme.TITLE_FONT);
+        title.setForeground(UITheme.ACCENT_HI);
+        inner.gridy = 0;
+        inner.insets = new Insets(0, 0, 18, 0);
+        content.add(title, inner);
 
         // Subtitle
         JLabel subtitle = new JLabel("IClone", SwingConstants.CENTER);
-        subtitle.setFont(new Font("Agency FB", Font.PLAIN, 22));
-        subtitle.setForeground(new Color(160, 160, 160));
-        gbc.gridy = 1;
-        gbc.insets = new Insets(0, 0, 60, 0);
-        add(subtitle, gbc);
+        subtitle.setFont(UITheme.H2_FONT);
+        subtitle.setForeground(UITheme.MUTED);
+        inner.gridy = 1;
+        inner.insets = new Insets(0, 0, 22, 0);
+        content.add(subtitle, inner);
+
+        JLabel tag = new JLabel("BIOHAZARD PROTOCOL", SwingConstants.CENTER);
+        tag.setFont(new Font("Agency FB", Font.BOLD, 18));
+        tag.setForeground(new Color(255, 255, 255, 140));
+        inner.gridy = 2;
+        inner.insets = new Insets(0, 0, 28, 0);
+        content.add(tag, inner);
 
         // Host button
         JButton hostBtn = makeButton("HOST GAME");
-        gbc.gridy = 2;
-        gbc.insets = new Insets(10, 100, 10, 100);
-        add(hostBtn, gbc);
+        inner.gridy = 3;
+        inner.insets = new Insets(8, 80, 8, 80);
+        content.add(hostBtn, inner);
 
         // Join button
         JButton joinBtn = makeButton("JOIN GAME");
-        gbc.gridy = 3;
-        add(joinBtn, gbc);
+        inner.gridy = 4;
+        content.add(joinBtn, inner);
 
         // Exit button
         JButton exitBtn = makeButton("EXIT");
-        exitBtn.setBackground(new Color(60, 60, 60));
-        gbc.gridy = 4;
-        gbc.insets = new Insets(30, 150, 10, 150);
-        add(exitBtn, gbc);
+        UITheme.styleButton(exitBtn, true);
+        inner.gridy = 5;
+        inner.insets = new Insets(22, 130, 0, 130);
+        content.add(exitBtn, inner);
+
+        GridBagConstraints wrap = new GridBagConstraints();
+        wrap.gridx = 0;
+        wrap.gridy = 0;
+        wrap.insets = new Insets(40, 70, 40, 70);
+        wrap.fill = GridBagConstraints.BOTH;
+        bg.add(content, wrap);
 
         // ---- Button Actions ----
 
@@ -112,22 +149,8 @@ public class MenuPanel extends JPanel {
 
     private JButton makeButton(String text) {
         JButton btn = new JButton(text);
-        btn.setFont(new Font("Agency FB", Font.BOLD, 24));
-        btn.setBackground(new Color(180, 20, 20));
-        btn.setForeground(Color.WHITE);
-        btn.setFocusPainted(false);
-        btn.setBorderPainted(false);
+        UITheme.styleButton(btn, false);
         btn.setPreferredSize(new Dimension(300, 55));
-        btn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-
-        // Hover effect
-        btn.addMouseListener(new java.awt.event.MouseAdapter() {
-            final Color normal = btn.getBackground();
-            final Color hover = normal.brighter();
-            public void mouseEntered(java.awt.event.MouseEvent e) { btn.setBackground(hover); }
-            public void mouseExited(java.awt.event.MouseEvent e)  { btn.setBackground(normal); }
-        });
-
         return btn;
     }
 }

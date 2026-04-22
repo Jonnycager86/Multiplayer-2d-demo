@@ -26,9 +26,26 @@ public class HostWaitingPanel extends JPanel {
         this.container = container;
         this.gameWindow = gameWindow;
 
-        setBackground(new Color(20, 20, 20));
+        setBackground(UITheme.BG_0);
         setLayout(new GridBagLayout());
         setPreferredSize(new Dimension(768, 576));
+
+        setOpaque(false);
+        BackgroundPanel bg = new BackgroundPanel();
+        bg.setLayout(new GridBagLayout());
+        bg.setPreferredSize(new Dimension(768, 576));
+        GridBagConstraints bgc = new GridBagConstraints();
+        bgc.gridx = 0;
+        bgc.gridy = 0;
+        bgc.fill = GridBagConstraints.BOTH;
+        bgc.weightx = 1.0;
+        bgc.weighty = 1.0;
+        add(bg, bgc);
+
+        JPanel content = new JPanel(new GridBagLayout());
+        content.setBackground(UITheme.PANEL);
+        content.setOpaque(true);
+        content.setBorder(UITheme.panelBorder());
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 0;
@@ -36,48 +53,48 @@ public class HostWaitingPanel extends JPanel {
 
         // Title
         JLabel title = new JLabel("HOSTING GAME", SwingConstants.CENTER);
-        title.setFont(new Font("Agency FB", Font.BOLD, 52));
-        title.setForeground(new Color(220, 30, 30));
+        title.setFont(UITheme.H1_FONT);
+        title.setForeground(UITheme.ACCENT_HI);
         gbc.gridy = 0;
-        gbc.insets = new Insets(0, 0, 50, 0);
-        add(title, gbc);
+        gbc.insets = new Insets(0, 0, 18, 0);
+        content.add(title, gbc);
 
         // Server status
         JLabel serverStatus = new JLabel("✓  Server is running", SwingConstants.CENTER);
         serverStatus.setFont(new Font("Agency FB", Font.PLAIN, 22));
-        serverStatus.setForeground(new Color(100, 220, 100));
+        serverStatus.setForeground(UITheme.OK);
         gbc.gridy = 1;
-        gbc.insets = new Insets(0, 0, 40, 0);
-        add(serverStatus, gbc);
+        gbc.insets = new Insets(0, 0, 18, 0);
+        content.add(serverStatus, gbc);
 
         // Instruction
         JLabel instruction = new JLabel("Send this IP to your friend:", SwingConstants.CENTER);
         instruction.setFont(new Font("Agency FB", Font.PLAIN, 20));
-        instruction.setForeground(new Color(180, 180, 180));
+        instruction.setForeground(UITheme.MUTED);
         gbc.gridy = 2;
         gbc.insets = new Insets(0, 0, 10, 0);
-        add(instruction, gbc);
+        content.add(instruction, gbc);
 
         // Detect Tailscale IP
         String tailscaleIP = MenuPanel.getTailscaleIP();
         String displayIP = (tailscaleIP != null) ? tailscaleIP : "Tailscale not detected";
-        Color ipColor = (tailscaleIP != null) ? new Color(100, 220, 100) : new Color(220, 100, 100);
+        Color ipColor = (tailscaleIP != null) ? UITheme.OK : UITheme.BAD;
 
         // IP display label (big and obvious)
         JLabel ipLabel = new JLabel(displayIP, SwingConstants.CENTER);
-        ipLabel.setFont(new Font("Consolas", Font.BOLD, 36));
+        ipLabel.setFont(UITheme.MONO_BIG);
         ipLabel.setForeground(ipColor);
         gbc.gridy = 3;
         gbc.insets = new Insets(0, 50, 10, 50);
-        add(ipLabel, gbc);
+        content.add(ipLabel, gbc);
 
         // Copy to clipboard button (only if IP was found)
         if (tailscaleIP != null) {
             String finalIP = tailscaleIP;
             JButton copyBtn = new JButton("📋  Copy IP");
             copyBtn.setFont(new Font("Agency FB", Font.PLAIN, 18));
-            copyBtn.setBackground(new Color(50, 50, 50));
-            copyBtn.setForeground(Color.WHITE);
+            copyBtn.setBackground(new Color(40, 40, 44));
+            copyBtn.setForeground(UITheme.TEXT);
             copyBtn.setFocusPainted(false);
             copyBtn.setBorderPainted(false);
             copyBtn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -89,37 +106,37 @@ public class HostWaitingPanel extends JPanel {
             });
             gbc.gridy = 4;
             gbc.insets = new Insets(0, 250, 30, 250);
-            add(copyBtn, gbc);
+            content.add(copyBtn, gbc);
         } else {
             JLabel hint = new JLabel("Make sure Tailscale is running", SwingConstants.CENTER);
             hint.setFont(new Font("Agency FB", Font.PLAIN, 16));
-            hint.setForeground(new Color(150, 150, 150));
+            hint.setForeground(new Color(255, 255, 255, 120));
             gbc.gridy = 4;
             gbc.insets = new Insets(0, 0, 30, 0);
-            add(hint, gbc);
+            content.add(hint, gbc);
         }
 
         // Port info (for reference)
         JLabel portInfo = new JLabel("Port: 5000  (your friend doesn't need to type this)", SwingConstants.CENTER);
         portInfo.setFont(new Font("Agency FB", Font.PLAIN, 15));
-        portInfo.setForeground(new Color(100, 100, 100));
+        portInfo.setForeground(new Color(255, 255, 255, 90));
         gbc.gridy = 5;
         gbc.insets = new Insets(0, 0, 50, 0);
-        add(portInfo, gbc);
+        content.add(portInfo, gbc);
 
         // Waiting label
         JLabel waitingLabel = new JLabel("Waiting for players to join...", SwingConstants.CENTER);
         waitingLabel.setFont(new Font("Agency FB", Font.PLAIN, 20));
-        waitingLabel.setForeground(new Color(180, 180, 100));
+        waitingLabel.setForeground(UITheme.WARN);
         gbc.gridy = 6;
         gbc.insets = new Insets(0, 0, 30, 0);
-        add(waitingLabel, gbc);
+        content.add(waitingLabel, gbc);
 
         // Play button (host joins their own game as client connecting to localhost)
         JButton playBtn = makeButton("PLAY");
         gbc.gridy = 7;
         gbc.insets = new Insets(0, 150, 12, 150);
-        add(playBtn, gbc);
+        content.add(playBtn, gbc);
 
         playBtn.addActionListener(e -> {
             // Host connects to their own server via localhost
@@ -128,31 +145,25 @@ public class HostWaitingPanel extends JPanel {
 
         // Back button
         JButton backBtn = makeButton("BACK TO MENU");
-        backBtn.setBackground(new Color(60, 60, 60));
+        UITheme.styleButton(backBtn, true);
         gbc.gridy = 8;
         gbc.insets = new Insets(0, 200, 0, 200);
-        add(backBtn, gbc);
+        content.add(backBtn, gbc);
 
         backBtn.addActionListener(e -> cardLayout.show(container, "MENU"));
+
+        GridBagConstraints wrap = new GridBagConstraints();
+        wrap.gridx = 0;
+        wrap.gridy = 0;
+        wrap.insets = new Insets(34, 70, 34, 70);
+        wrap.fill = GridBagConstraints.BOTH;
+        bg.add(content, wrap);
     }
 
     private JButton makeButton(String text) {
         JButton btn = new JButton(text);
-        btn.setFont(new Font("Agency FB", Font.BOLD, 24));
-        btn.setBackground(new Color(180, 20, 20));
-        btn.setForeground(Color.WHITE);
-        btn.setFocusPainted(false);
-        btn.setBorderPainted(false);
+        UITheme.styleButton(btn, false);
         btn.setPreferredSize(new Dimension(300, 55));
-        btn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-
-        btn.addMouseListener(new java.awt.event.MouseAdapter() {
-            final Color normal = btn.getBackground();
-            final Color hover = normal.brighter();
-            public void mouseEntered(java.awt.event.MouseEvent e) { btn.setBackground(hover); }
-            public void mouseExited(java.awt.event.MouseEvent e)  { btn.setBackground(normal); }
-        });
-
         return btn;
     }
 }

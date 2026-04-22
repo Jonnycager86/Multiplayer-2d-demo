@@ -4,6 +4,7 @@ import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.GridLayout;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -90,33 +91,33 @@ public class GameWindow extends JFrame {
         screen.setBackground(Color.BLACK);
 
         // HUD / info bar
-       // infoPanel = new JPanel(new GridLayout(1, 3, 10, 0));
-       // infoPanel.setPreferredSize(new Dimension(800, 40));
-       // infoPanel.setBackground(Color.DARK_GRAY);
+        JPanel infoPanel = new JPanel(new GridLayout(1, 3, 10, 0));
+        infoPanel.setPreferredSize(new Dimension(768, 38));
+        infoPanel.setBackground(new Color(10, 10, 12));
 
-        Font labelFont = new Font("Agency FB", Font.BOLD, 16);
+        Font labelFont = new Font("Consolas", Font.PLAIN, 14);
         zombieCountLabel = new JLabel("Zombies: 0", SwingConstants.CENTER);
         zombieCountLabel.setFont(labelFont);
-        zombieCountLabel.setForeground(Color.WHITE);
+        zombieCountLabel.setForeground(new Color(235, 235, 235));
 
-        ammoLabel = new JLabel("Ammo: 10", SwingConstants.CENTER);
+        ammoLabel = new JLabel("Ammo: --/--", SwingConstants.CENTER);
         ammoLabel.setFont(labelFont);
-        ammoLabel.setForeground(Color.WHITE);
+        ammoLabel.setForeground(new Color(235, 235, 235));
 
-        scoreLabel = new JLabel("Score: 0", SwingConstants.CENTER);
+        scoreLabel = new JLabel("Grenades: --", SwingConstants.CENTER);
         scoreLabel.setFont(labelFont);
-        scoreLabel.setForeground(Color.WHITE);
+        scoreLabel.setForeground(new Color(235, 235, 235));
 
-        // infoPanel.add(zombieCountLabel);
-        // infoPanel.add(ammoLabel);
-        // infoPanel.add(scoreLabel);
+        infoPanel.add(zombieCountLabel);
+        infoPanel.add(ammoLabel);
+        infoPanel.add(scoreLabel);
 
         // Game panel (the actual game rendering + input)
         gamePanel = new GamePanel();
         gamePanel.setBackground(Color.BLACK);
         gamePanel.initGameThread();   // start the render loop now; network starts later
 
-       // screen.add(infoPanel, java.awt.BorderLayout.NORTH);
+        screen.add(infoPanel, java.awt.BorderLayout.NORTH);
         screen.add(gamePanel, java.awt.BorderLayout.CENTER);
 
         return screen;

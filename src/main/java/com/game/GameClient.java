@@ -150,7 +150,7 @@ public class GameClient implements Runnable{
         public void processZombieState(SnapshotPacket snapshot){
             
             for(EntityState statepkt : snapshot.state){
-                if(statepkt.entityType == 0){
+                if(statepkt.entityType == 1){
 
                     zombie.setX(statepkt.x);
                     zombie.setY(statepkt.y);

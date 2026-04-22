@@ -3,6 +3,7 @@ package com.game;
 public class Node implements Comparable<Node> {
 
     public int gCost;
+    public int hCost;
     public int fCost;
     public Node parent;
     public boolean checked;
@@ -46,6 +47,7 @@ public class Node implements Comparable<Node> {
             return fcompare;
         }
         else{
+            // Prefer nodes that are closer to the start when fCost ties.
             return Integer.compare(this.gCost, node.gCost);
         }
     }

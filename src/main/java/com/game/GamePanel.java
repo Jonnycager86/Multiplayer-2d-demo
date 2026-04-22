@@ -103,7 +103,7 @@ public class GamePanel extends JPanel implements Runnable{
         }
 
     if(zombie != null){
-        zombie.render(g2);
+        zombie.render(g2, tileManager);
     }
 
         g2.fillRect(Mouse.getMouseX(), Mouse.getMouseY(), 25, 25);

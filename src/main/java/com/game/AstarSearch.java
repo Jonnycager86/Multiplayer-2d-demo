@@ -5,14 +5,12 @@ import java.util.PriorityQueue;
 
 public class AstarSearch {
 
-    final int max_rows = 24;
-    final int max_cols = 32;
     final int maxRows;
     final int maxCols;
     final int tileSize = 48;
 
 
-    Node[][] nodeGrid = new Node[max_cols][max_rows];
+    Node[][] nodeGrid;
     int[][] mapGrid;
     Node startNode, currNode, targetNode;
     boolean targetReached = false;
@@ -26,14 +24,14 @@ public class AstarSearch {
         this.mapGrid = mapGrid;
         this.maxRows = maxRows;
         this.maxCols = maxCols;
-        this.nodeGrid = new Node[max_cols][max_rows];
+        this.nodeGrid = new Node[maxCols][maxRows];
         initNodes();
     }
 
      private void initNodes() {
 
-        for (int row = 0; row < max_rows; row++) {
-            for (int col = 0; col < max_cols; col++) {
+        for (int row = 0; row < maxRows; row++) {
+            for (int col = 0; col < maxCols; col++) {
 
                 nodeGrid[col][row] = new Node(col, row);
 
@@ -44,23 +42,8 @@ public class AstarSearch {
         }
     }
 
-    public void getCost(Node node){
-
-        // Find G cost
-        int xGDist = Math.abs(node.col - startNode.col);
-        int yGDist = Math.abs(node.row - startNode.row);
-
-        int gCost = xGDist + yGDist;
-
-        // Find H cost
-        int xHDist = Math.abs(node.col - targetNode.col);
-        int yHDist = Math.abs(node.row - targetNode.row);
-
-        int hCost = xHDist + yHDist;
-
-
-        
-        node.fCost = hCost + gCost;
+    private int heuristic(Node a, Node b) {
+        return Math.abs(a.col - b.col) + Math.abs(a.row - b.row);
     }
 
     public void resetNodes(){
@@ -70,26 +53,20 @@ public class AstarSearch {
         checkedList.clear();
         pathList.clear();
 
-        int col = 0;
-        int row = 0;
-
-        while(row < max_rows && col < max_cols){
-            Node curr = nodeGrid[col][row];
-            curr.fCost = 0;
-            curr.gCost = 0;
-            curr.checked = false;
-            curr.isOpen = false;
-            curr.parent = null;
-            col++;
-        
-
-            if(col == max_cols){
-                col = 0;
-                row++;
+        for (int row = 0; row < maxRows; row++) {
+            for (int col = 0; col < maxCols; col++) {
+                Node curr = nodeGrid[col][row];
+                curr.fCost = 0;
+                curr.gCost = Integer.MAX_VALUE;
+                curr.hCost = 0;
+                curr.checked = false;
+                curr.isOpen = false;
+                curr.parent = null;
+                curr.isStart = false;
+                curr.isTarget = false;
+            }
         }
     }
-    }
-
 
     public void setupNodes(int startCol, int startRow, int targetCol, int targetRow){
 
@@ -101,34 +78,34 @@ public class AstarSearch {
 
         startNode.setAsStart();
         targetNode.setAsTarget();
-
-        int col = 0;
-        int row = 0;
-
-        while(row < max_rows && col < max_cols){
-            getCost(nodeGrid[col][row]);
-            col++;
-
-            if(col >= max_cols){
-                col = 0;
-                row++;
-
-            }
-
-             openList.offer(startNode);
-             startNode.setAsOpen();
-
-        }
-
+        startNode.gCost = 0;
+        startNode.hCost = heuristic(startNode, targetNode);
+        startNode.fCost = startNode.gCost + startNode.hCost;
+        openList.offer(startNode);
+        startNode.setAsOpen();
     }
 
     public void openNode(Node node){
 
-        if(node.isOpen == false && node.checked == false && node.solid == false){
+        if(node.checked || node.solid){
+            return;
+        }
 
-            node.setAsOpen();
+        int tentativeG = currNode.gCost + 1;
+        if (!node.isOpen || tentativeG < node.gCost) {
             node.parent = currNode;
-            openList.offer(node);
+            node.gCost = tentativeG;
+            node.hCost = heuristic(node, targetNode);
+            node.fCost = node.gCost + node.hCost;
+
+            if (!node.isOpen) {
+                node.setAsOpen();
+                openList.offer(node);
+            } else {
+                // refresh node position
+                openList.remove(node);
+                openList.offer(node);
+            }
         }
     }
 
@@ -172,7 +149,7 @@ public class AstarSearch {
         Node curr = targetNode;
         pathList.clear();
 
-        while(curr != startNode && curr != startNode){
+        while(curr != null && curr != startNode){
             pathList.add(0, curr); 
            curr = curr.parent;
         }

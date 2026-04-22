@@ -154,16 +154,24 @@ public class GameServer implements Runnable{
             while((movepkt = entry.getValue().poll()) != null){
                
                 movement.update(movepkt, player);
-                zombieUpdate(player, zombie);  // careful about placement here
-
-                EntityState statePacketP = getPlayerStatePacket(player);
-                EntityState statePacketZ = getZombieStatePacket(zombie);
-
-                if(statePacketP != null && statePacketZ != null){
-                snapshot.state.add(statePacketP);
-                snapshot.state.add(statePacketZ);
-                }
             }
+        }
+
+        // Update zombie once per tick (even if players didn't move this tick)
+        if (!players.isEmpty()) {
+            zombieUpdate(players.get(0), zombie);
+        }
+
+        // Build snapshot every tick
+        for (ServerPlayer player : players) {
+            EntityState statePacketP = getPlayerStatePacket(player);
+            if (statePacketP != null) {
+                snapshot.state.add(statePacketP);
+            }
+        }
+        EntityState statePacketZ = getZombieStatePacket(zombie);
+        if (statePacketZ != null) {
+            snapshot.state.add(statePacketZ);
         }
 
         broadcastSnapshotToClients(snapshot);

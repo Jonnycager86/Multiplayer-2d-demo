@@ -10,10 +10,7 @@ public class InputHandler implements KeyListener{
     public static boolean upPressed, downPressed, leftPressed, rightPressed;
 
 
-    //Dependencies
-
     public InputHandler(){
-        
     }
 
 

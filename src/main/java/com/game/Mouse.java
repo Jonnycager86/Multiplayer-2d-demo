@@ -8,6 +8,8 @@ public class Mouse implements MouseListener, MouseMotionListener{
 
     private static  int mouseX = -1;
     private static  int mouseY = -1;
+    private static boolean leftDown = false;
+    private static boolean rightDown = false;
 
 
     @Override
@@ -29,12 +31,14 @@ public class Mouse implements MouseListener, MouseMotionListener{
 
     @Override
     public void mousePressed(MouseEvent e) {
-        // intentionally unused for now
+        if (e.getButton() == MouseEvent.BUTTON1) leftDown = true;
+        if (e.getButton() == MouseEvent.BUTTON3) rightDown = true;
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        // intentionally unused for now
+        if (e.getButton() == MouseEvent.BUTTON1) leftDown = false;
+        if (e.getButton() == MouseEvent.BUTTON3) rightDown = false;
     }
 
     @Override
@@ -53,6 +57,14 @@ public class Mouse implements MouseListener, MouseMotionListener{
 
     public static int getMouseY(){
         return mouseY;
+    }
+
+    public static boolean isLeftDown() {
+        return leftDown;
+    }
+
+    public static boolean isRightDown() {
+        return rightDown;
     }
 
 }

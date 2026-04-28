@@ -7,7 +7,10 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Stroke;
 import java.awt.geom.RoundRectangle2D;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 
 import javax.swing.JPanel;
 
@@ -21,6 +24,8 @@ public class GamePanel extends JPanel implements Runnable{
     public ClientZombie zombie;
     public HashMap<Integer, WorldPlayer> worldPlayers;
     TileManager tileManager = new TileManager();
+    private final AssaultRifle rifle = new AssaultRifle();
+    private final List<Bullet> bullets = new ArrayList<>();
 
 
     private Thread gameThread;
@@ -61,7 +66,22 @@ public class GamePanel extends JPanel implements Runnable{
     }
 
     public void updateGame(){
-       
+       // fixed timestep for now (matches current render loop)
+       float dt = 1f / FPS;
+
+       if (clientPlayer == null) return;
+
+       rifle.update(dt);
+
+       boolean triggerHeld = Mouse.isLeftDown();
+       List<Bullet> spawned = rifle.tryFire(triggerHeld, clientPlayer.getX(), clientPlayer.getY(), clientPlayer.getRotation());
+       if (!spawned.isEmpty()) bullets.addAll(spawned);
+
+       for (Iterator<Bullet> it = bullets.iterator(); it.hasNext();) {
+            Bullet b = it.next();
+            b.update(dt);
+            if (b.isDead()) it.remove();
+       }
     }
 
     @Override
@@ -99,9 +119,18 @@ public class GamePanel extends JPanel implements Runnable{
     if(tileManager != null){
         tileManager.render(g2, clientPlayer);
     }
+
+    // bullets first so player + flash reads cleanly on top
+    for (Bullet b : bullets) {
+        b.render(g2, tileManager);
+    }
+
     if(clientPlayer != null){
        clientPlayer.render(g2, tileManager);
     }
+
+    // simple "light" / muzzle flash on top of the player
+    rifle.renderMuzzleFlash(g2, tileManager);
         
     if(worldPlayers != null){
        for(WorldPlayer wp : worldPlayers.values()){
@@ -142,7 +171,13 @@ public class GamePanel extends JPanel implements Runnable{
 
         g2.setFont(new Font("Consolas", Font.PLAIN, 14));
         g2.setColor(new Color(235, 235, 235));
-        g2.drawString("AMMO  --/--", x + 14, y + 26);
+        String ammoLine;
+        if (rifle.isReloading()) {
+            ammoLine = String.format("AMMO  %d/%d  (RELOADING)", rifle.getMagAmmo(), rifle.getMagSize());
+        } else {
+            ammoLine = String.format("AMMO  %d/%d  |  %d", rifle.getMagAmmo(), rifle.getMagSize(), rifle.getReserveAmmo());
+        }
+        g2.drawString(ammoLine, x + 14, y + 26);
         g2.drawString("GREN  --",    x + 14, y + 46);
         g2.drawString("HP    --%",   x + 14, y + 66);
 

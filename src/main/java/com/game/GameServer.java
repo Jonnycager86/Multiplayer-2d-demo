@@ -227,7 +227,6 @@ public class GameServer implements Runnable{
        entityState.x = zombie.getPosition().x;
        entityState.y = zombie.getPosition().y;
        entityState.zombieRotation = zombie.getRotationAngle();
-       System.out.println("Rotation: " + zombie.getRotationAngle());
        entityState.entityType = 1;
 
         return entityState;

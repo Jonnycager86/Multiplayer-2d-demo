@@ -135,6 +135,7 @@ public class GameClient implements Runnable{
                     worldPlayer.setID(statepkt.EntityID);
                     worldPlayer.setX(statepkt.x);
                     worldPlayer.setY(statepkt.y);
+                    worldPlayer.setRotation(statepkt.playerRotation);
                     worldPlayers.put(statepkt.EntityID, worldPlayer);
                 }
                 else{
@@ -154,6 +155,7 @@ public class GameClient implements Runnable{
 
                     zombie.setX(statepkt.x);
                     zombie.setY(statepkt.y);
+                    zombie.setRotation(statepkt.zombieRotation);
                 }
         }
 
@@ -182,6 +184,8 @@ public class GameClient implements Runnable{
            movepkt.down = input.downPressed;
            movepkt.left = input.leftPressed;
            movepkt.right = input.rightPressed;
+
+           movepkt.rotation = clientPlayer.getRotation();
         }
 
 

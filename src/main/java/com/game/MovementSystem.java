@@ -6,7 +6,7 @@ public class MovementSystem{ // for now this will only deal with players
     
      //should also have a unique player id or entity id
 
-    public void update(MoveIntentPacket movepkt, ServerPlayer player){            //Needs work
+    public void update(MoveIntentPacket movepkt, ServerPlayer player){          
 
 
         player.setVelocity(0,0);
@@ -29,6 +29,8 @@ public class MovementSystem{ // for now this will only deal with players
         player.getVelocity().scale(speed);
 
         player.getPosition().add(player.getVelocity());
+
+        player.setRotation(movepkt.rotation);
 
 
     }

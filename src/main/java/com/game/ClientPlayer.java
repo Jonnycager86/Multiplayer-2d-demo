@@ -26,6 +26,7 @@ public class ClientPlayer {  //This will be visual mirror of the server side pla
 
     public ClientPlayer(){ // player should have its own method to load images and animations
         playerImg = ImageManager.loadImage("/images/PlayerRIGHT.png");
+       
     }
 
 
@@ -40,6 +41,8 @@ public class ClientPlayer {  //This will be visual mirror of the server side pla
 
         double angle = Math.atan2(Mouse.getMouseY() - playerScreenY, Mouse.getMouseX() - playerScreenX); //Already in radians
 
+        rotation = angle;
+
         g2.rotate(angle, playerScreenX+32, playerScreenY+32);
 
         if(playerImg != null){
@@ -51,6 +54,11 @@ public class ClientPlayer {  //This will be visual mirror of the server side pla
         }
 
         g2.setTransform(oldTransform);
+    }
+
+
+    public BufferedImage getImage(){
+        return this.playerImg;
     }
 
 

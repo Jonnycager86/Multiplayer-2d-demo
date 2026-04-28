@@ -11,6 +11,7 @@ public class ServerPlayer{
     private Vector2D position;
     private Vector2D velocity;
     private AffineTransform transform;
+    private double rotation;
 
    
 
@@ -58,6 +59,14 @@ public class ServerPlayer{
 
     public int getID(){
         return this.EntityID;
+    }
+
+    public double getRotation(){
+        return this.rotation;
+    }
+
+    public void setRotation(double rotation){
+        this.rotation = rotation;
     }
 
 }

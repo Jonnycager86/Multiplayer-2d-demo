@@ -56,21 +56,5 @@ public class InputHandler implements KeyListener{
 
 
 
-    // removing for now
-//       public boolean isUpPressed() {
-//         return upPressed;
-//     }
-//     public boolean isDownPressed() {
-//         return downPressed;
-//     }
-//     public boolean isLeftPressed() {
-//         return leftPressed;
-//     }
-//     public boolean isRightPressed() {
-//         return rightPressed;
-    
-// }
-
-
 }
 

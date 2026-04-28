@@ -149,7 +149,7 @@ public class GameServer implements Runnable{
 
         for(Map.Entry<Integer, LinkedBlockingQueue<MoveIntentPacket>> entry : inputQueues.entrySet()){
 
-            ServerPlayer player = getServerPlayerByID(entry.getKey()); // this needs to change
+            ServerPlayer player = getServerPlayerByID(entry.getKey());
 
             while((movepkt = entry.getValue().poll()) != null){
                
@@ -157,9 +157,8 @@ public class GameServer implements Runnable{
             }
         }
 
-        // Update zombie once per tick (even if players didn't move this tick)
         if (!players.isEmpty()) {
-            zombieUpdate(players.get(0), zombie);
+            zombieUpdate(players, zombie);
         }
 
         // Build snapshot every tick
@@ -176,6 +175,7 @@ public class GameServer implements Runnable{
 
         broadcastSnapshotToClients(snapshot);
     }
+
     
     public void broadcastSnapshotToClients(SnapshotPacket snapshot){
 
@@ -215,6 +215,7 @@ public class GameServer implements Runnable{
        entityState.EntityID = player.getID();
        entityState.x = player.getPosition().x;
        entityState.y = player.getPosition().y;
+       entityState.playerRotation = player.getRotation();
        entityState.entityType = 0;
 
         return entityState;
@@ -225,6 +226,8 @@ public class GameServer implements Runnable{
 
        entityState.x = zombie.getPosition().x;
        entityState.y = zombie.getPosition().y;
+       entityState.zombieRotation = zombie.getRotationAngle();
+       System.out.println("Rotation: " + zombie.getRotationAngle());
        entityState.entityType = 1;
 
         return entityState;
@@ -266,9 +269,9 @@ public class GameServer implements Runnable{
         
    }
 
-   public void zombieUpdate(ServerPlayer player, ServerZombie zombie){
+   public void zombieUpdate(ArrayList<ServerPlayer> players, ServerZombie zombie){
 
-        zombie.updatePathToTarget(player);
+        zombie.updatePathToTarget(players);
 
         zombie.followPath();
    }

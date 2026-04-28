@@ -4,13 +4,14 @@ import java.util.ArrayList;
 
 public class ServerZombie extends ServerPlayer {
 
-    private final float speed = 2.0f;
+    private final float speed = 4.0f;
     private final AstarSearch pathfinder;
     private ArrayList<Node> currentPath = new ArrayList<>();
     private final int[][] mapGrid;
     private final int tileSize = 48;
     private final int maxRows = Constants.max_row_size;
     private final int maxCols = Constants.max_col_size;
+    private double rotationAngle;
 
     public ServerZombie(GameMap gameMap) {
         super();
@@ -31,12 +32,35 @@ public class ServerZombie extends ServerPlayer {
         return mapGrid[row][col] == 1;
     }
 
-    public void updatePathToTarget(ServerPlayer target) {
-        int startCol = pathfinder.worldToCol(this.getPosition().x);
-        int startRow = pathfinder.worldToRow(this.getPosition().y);
+    public void updatePathToTarget(ArrayList<ServerPlayer> targets) {
 
-        int targetCol = pathfinder.worldToCol(target.getPosition().x);
-        int targetRow = pathfinder.worldToRow(target.getPosition().y);
+        ServerPlayer nearestPlayer = null;
+        float minDist = Float.MAX_VALUE;
+
+        float zombieX = this.getPosition().x;
+        float zombieY = this.getPosition().y;
+
+        int startCol = pathfinder.worldToCol(zombieX);
+        int startRow = pathfinder.worldToRow(zombieY);
+
+        for(ServerPlayer target : targets){
+
+            float dx = target.getPosition().x - zombieX;
+            float dy = target.getPosition().y - zombieY;
+
+            float dist = dx * dx + dy * dy;
+
+            if(dist < minDist){
+                minDist = dist;
+                nearestPlayer = target;    
+            }
+
+        }
+
+        if(nearestPlayer != null){
+            int targetCol = pathfinder.worldToCol(nearestPlayer.getPosition().x);   //dereferencing a null pointer because nearestPlayer will be null if the if block above somehow doesnt go through
+            int targetRow = pathfinder.worldToRow(nearestPlayer.getPosition().y);
+        
 
         boolean foundPath = pathfinder.search(startCol, startRow, targetCol, targetRow);
 
@@ -45,6 +69,12 @@ public class ServerZombie extends ServerPlayer {
         } else {
             currentPath.clear();
         }
+
+        
+
+        rotationAngle = Math.atan2(nearestPlayer.getPosition().x - zombieX, nearestPlayer.getPosition().y - zombieY);
+        
+        }
     }
 
     public void followPath() {
@@ -52,7 +82,7 @@ public class ServerZombie extends ServerPlayer {
             return;
         }
 
-        Node nextNode = currentPath.get(0); // this could maybe be a stack instead
+        Node nextNode = currentPath.get(0); // this could maybe be a stack 
 
         float targetX = pathfinder.colToWorldCenterX(nextNode.col);
         float targetY = pathfinder.rowToWorldCenterY(nextNode.row);
@@ -116,5 +146,13 @@ public class ServerZombie extends ServerPlayer {
 
     public ArrayList<Node> getCurrentPath() {
         return currentPath;
+    }
+
+    public double getRotationAngle(){
+        return this.rotationAngle;
+    }
+
+    public void setRotationAngle(double angle){
+        this.rotationAngle = angle;
     }
 }

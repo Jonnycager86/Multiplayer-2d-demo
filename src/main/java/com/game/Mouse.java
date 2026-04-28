@@ -6,8 +6,8 @@ import java.awt.event.MouseMotionListener;
 
 public class Mouse implements MouseListener, MouseMotionListener{
 
-    private static int mouseX = -1;
-    private static int mouseY = -1;
+    private static  int mouseX = -1;
+    private static  int mouseY = -1;
 
 
     @Override

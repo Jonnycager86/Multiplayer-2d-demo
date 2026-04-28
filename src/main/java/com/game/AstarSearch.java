@@ -109,7 +109,8 @@ public class AstarSearch {
         }
     }
 
-   public boolean search(int startCol, int startRow, int targetCol, int targetRow) {
+   public boolean search(int startCol, int startRow, int targetCol, int targetRow){
+
         if (!isValidTile(startCol, startRow) || !isValidTile(targetCol, targetRow)) {
             return false;
         }
@@ -117,12 +118,14 @@ public class AstarSearch {
             return false;
         }
         setupNodes(startCol, startRow, targetCol, targetRow);
+
         while (!targetReached && !openList.isEmpty()) {
             currNode = openList.poll();
             currNode.setAsChecked();
             checkedList.add(currNode);
             int col = currNode.col;
             int row = currNode.row;
+
             if (currNode == targetNode) {
                 targetReached = true;
                 backTrack();

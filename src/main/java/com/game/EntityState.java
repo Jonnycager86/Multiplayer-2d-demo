@@ -6,5 +6,7 @@ public class EntityState {  // will store other state variables like health, rot
     public int entityType; // 0 for player, 1 for zombie
     public float x;
     public float y;
+    public double playerRotation;
+    public double zombieRotation;
 
 }

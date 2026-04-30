@@ -43,7 +43,10 @@ public class ClientPlayer {  //This will be visual mirror of the server side pla
 
         rotation = angle;
 
-        g2.rotate(angle, playerScreenX+32, playerScreenY+32);
+        // Pivot at sprite center (draw_width / draw_height are 100)
+        float cx = playerScreenX + draw_width * 0.5f;
+        float cy = playerScreenY + draw_height * 0.5f;
+        g2.rotate(angle, cx, cy);
 
         if(playerImg != null){
         g2.drawImage(playerImg, (int)playerScreenX, (int)playerScreenY, draw_width, draw_height, null);

@@ -61,14 +61,21 @@ public final class AssaultRifle {
         magAmmo--;
         shotCooldown = 1f / roundsPerSecond;
 
-        float pivotX = playerWorldX + 32f;
-        float pivotY = playerWorldY + 32f;
-        float muzzleX = pivotX + (float) Math.cos(angleRadians) * 42f;
-        float muzzleY = pivotY + (float) Math.sin(angleRadians) * 42f;
+        // Match ClientPlayer: 100x100 sprite. Gun is on the character's right; offset muzzle along forward + "right" = (-sin, cos)
+        final float spriteW = 100f;
+        final float spriteH = 100f;
+        float pivotX = playerWorldX + spriteW * 0.5f;
+        float pivotY = playerWorldY + spriteH * 0.5f;
+        float cos = (float) Math.cos(angleRadians);
+        float sin = (float) Math.sin(angleRadians);
+        float forward = 18f;
+        float gunSide = 12f; // toward sprite right (e.g. east when facing north)
+        float muzzleX = pivotX + cos * forward - sin * gunSide;
+        float muzzleY = pivotY + sin * forward + cos * gunSide;
 
         lastMuzzleX = muzzleX;
         lastMuzzleY = muzzleY;
-        muzzleFlashTimer = 0.07f;
+        muzzleFlashTimer = 0.09f;
 
         float vx = (float) Math.cos(angleRadians) * bulletSpeed;
         float vy = (float) Math.sin(angleRadians) * bulletSpeed;
@@ -81,7 +88,8 @@ public final class AssaultRifle {
     public void renderMuzzleFlash(Graphics2D g2, TileManager tilemgr) {
         if (muzzleFlashTimer <= 0f) return;
 
-        float t = muzzleFlashTimer / 0.07f; // 1..0
+        final float flashDuration = 0.09f;
+        float t = muzzleFlashTimer / flashDuration; // 1..0
         float sx = lastMuzzleX - tilemgr.cameraX;
         float sy = lastMuzzleY - tilemgr.cameraY;
 
@@ -89,23 +97,34 @@ public final class AssaultRifle {
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
         Composite old = g2.getComposite();
-        g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, Math.min(1f, 0.55f * t)));
 
-        float r = 26f + (1f - t) * 10f;
+        float r = 38f + (1f - t) * 22f;
+        g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, Math.min(1f, 0.92f * t)));
         RadialGradientPaint paint = new RadialGradientPaint(
             new Point2D.Float(sx, sy),
             r,
-            new float[] { 0f, 0.45f, 1f },
+            new float[] { 0f, 0.35f, 0.7f, 1f },
             new Color[] {
-                new Color(255, 245, 180, 220),
-                new Color(255, 150, 60, 120),
-                new Color(255, 60, 60, 0)
+                new Color(255, 255, 240, 255),
+                new Color(255, 210, 90, 230),
+                new Color(255, 120, 40, 140),
+                new Color(255, 40, 20, 0)
             }
         );
 
         var oldPaint = g2.getPaint();
         g2.setPaint(paint);
         g2.fillOval((int) (sx - r), (int) (sy - r), (int) (r * 2f), (int) (r * 2f));
+
+        float coreR = 14f + (1f - t) * 6f;
+        g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, Math.min(1f, t)));
+        g2.setPaint(new RadialGradientPaint(
+            new Point2D.Float(sx, sy),
+            coreR,
+            new float[] { 0f, 1f },
+            new Color[] { new Color(255, 255, 255, 250), new Color(255, 200, 120, 0) }
+        ));
+        g2.fillOval((int) (sx - coreR), (int) (sy - coreR), (int) (coreR * 2f), (int) (coreR * 2f));
         g2.setPaint(oldPaint);
 
         g2.setComposite(old);

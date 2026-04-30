@@ -1,1 +1,1 @@
-Initial setup for co-op top down zombie game in Java
+Co op Multiplayer zombie shooter with multi client sync and pathfinding zombies
